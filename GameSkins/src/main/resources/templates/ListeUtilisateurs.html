@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="navbar" xmlns:sec=https://www.thymeleaf.org/thymeleaf-extras-springsecurity5
+>
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Utilisateurs</title>
+</head>
+<body>
+    <div layout:fragment="Mynavbar">
+    <div class="container mt-5">
+    <div class="card">
+     <div class="card-header">
+    Liste des Utilisateurs
+     </div>
+     <div class="card-body"> 
+     <table id="myTable" class="table table-striped">
+     <tr>
+     <th>ID</th><th>Utilisateur</th><th>Etat</th><th sec:authorize="hasRole('ADMIN')">Actions</th>
+     </tr> 
+     <tr th:each="u:${users}">
+     <td th:text="${u.user_id}"></td>
+     <td th:text="${u.username}"></td>
+        <td th:if="${u.enabled == true}" th:text="activer"></td>
+        <td th:if="${u.enabled == false}" th:text="desactiver"></td>
+     <td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger" onclick="return confirm('Etes-vous sur ?')" th:href="@{supprimerUtilisateurs(id=${u.user_id})}">Supprimer</a></td>
+   <td sec:authorize="hasRole('ADMIN')"><a class="btn btn-success" th:href="@{modifierUtilisateurs(id=${u.user_id})}">Editer</a></td>
+     </tr> 
+     </table>
+     
+     </div>
+    </div>
+    </div>
+    </div>
+    </body>
+</html>

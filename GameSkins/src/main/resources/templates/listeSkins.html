@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="navbar" xmlns:sec=https://www.thymeleaf.org/thymeleaf-extras-springsecurity5>
+<head>
+<meta charset="utf-8">
+<title>Liste des Skins</title>
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div layout:fragment="Mynavbar">
+    <div class="container mt-5">
+    <div class="card">
+     <div class="card-header">
+     Liste des Skins
+     </div>
+     <div class="card-body"> 
+     <table align='center' width='100%'><tr><td> 
+              <form class="search-box" th:action="@{searchType}" method="GET">        
+                    <div class="form-group"> 
+ <select name="type" class="form-control" th:if= "${!#strings.isEmpty(types)}">  
+  <option th:value="0" selected>Choisir Type</option>
+ <option th:each="t : ${types}" th:value="${t.idType}" th:text="${t.nomType}"></option>
+ </select>
+  <input type="submit" value="Chercher" class="btn btn-primary" style="margin-top:4px;">
+      </div>
+          
+                </form>
+             </td></tr></table>
+             
+     <table id="myTable" class="table table-striped" style="text-align: center;">
+     <tr>
+     <th>ID</th><th>Nom Skin</th><th>Prix</th><th>Date Creation</th><th>Type</th><th sec:authorize="hasRole('ADMIN')" colspan="2">Actions</th>
+     </tr> 
+     <tr th:each="s:${skins}">
+     <td th:text="${s.idSkin}"></td>
+     <td th:text="${s.nomSkin}"></td>
+     <td th:text="${s.prixSkin}"></td> 
+   
+     <td th:text="${s.dateCreation}"></td> 
+          <td th:if= "${!#strings.isEmpty(s.type)}" th:text="${s.type.nomType}"></td>  
+  <td th:if= "${#strings.isEmpty(s.type)}" th:text="${'Pas de type'}"></td>
+    <td sec:authorize="hasRole('ADMIN')" ><a class="btn btn-danger"
+onclick="return confirm('Etes-vous sûr ?')"
+th:href="@{supprimerSkin(id=${s.idSkin}, 
+page=${currentPage},size=${size})}">Supprimer</a>
+</td>
+   <td sec:authorize="hasRole('ADMIN')"><a class="btn btn-success"
+th:href="@{modifierSkin(id=${s.idSkin})}">Editer</a></td>
+     </tr> 
+     </table>
+     <ul class="nav nav-pills">
+     <li th:each="page,status:${pages}">
+     <a th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+     th:href="@{ ListeSkins(page=${status.index}, size=${size} ) }"
+     th:text="${status.index }"></a>
+     </li>
+     </ul>
+     <hr>
+      <center> <div th:if="${mode=='SearchType'}">
+      <a th:href="@{ListeSkins}" ><button type="button" class="btn btn-primary">Retour</button></a>
+          </div></center>
+         
+     </div>
+    </div>
+    </div>
+    </div>
+        
+    </body>
+</html>

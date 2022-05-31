@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="navbar">
+<link rel="stylesheet" type="text/css"
+href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Ajout et modification des Type</title>
+</head>
+<body>
+<div layout:fragment="Mynavbar">
+<div class="container mt-5">
+<div class="card">
+<div class="card-header">Ajout et Modification des Types </div>
+<div class="card-body">
+ <form th:action="@{saveType}" method="post">
+ <div class="form-group">
+<label class="control-label" hidden>ID Type :</label>
+<input type="hidden" name="idType" class="form-control"
+th:value="${types.idType}" />
+ </div>
+
+<div class="form-group">
+ <label class="control-label">Nom Type :</label>
+ <input type="text" name="nomType" class="form-control" th:value="${types.nomType}" required/>
+
+</div>
+<div class="form-group">
+<label class="control-label">Description Type :</label>
+<input type="text" name="descriptionType" class="form-control" th:value="${types.descriptionType}" required/>
+
+</div>
+ <div style="text-align:center;margin-top:20px;">
+ <button type="submit" class="btn btn-primary">Valider</button>
+ </div>
+ </div>
+</form>
+</div>
+ </div>
+ </div>
+ </div>
+</body>
+</html>
